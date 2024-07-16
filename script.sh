@@ -1,3 +1,6 @@
+# Watch function for ghostscript
+# - Rohan Gunjal (github.com/theZeenX1)
+
 #!/bin/bash
 
 EVINCE_PRESENT=true
