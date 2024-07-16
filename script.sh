@@ -3,16 +3,9 @@
 
 #!/bin/bash
 
-EVINCE_PRESENT=true
-
 command -v gs >/dev/null 2>&1 || { 
     echo >&2 "Ghostscript not found. Try installing it using:\napt-get install ghostscript\nor\nyum install ghostscript"; 
     exit 1; 
-}
-
-command -v evince >/dev/null 2>&1 || { 
-    echo >&2 "Evince not found. Open the output pdf manually"; 
-    EVINCE_PRESENT=false 
 }
 
 cleanup() {
@@ -48,11 +41,7 @@ if [[ $FILENAME = *.ps ]]; then
     gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile="${OUTPUT_FILE}" "${FILENAME}" &
     GSPID=$(ps aux | grep "gs ${FILENAME}" | awk '{print $2}' | head -n 1)
     sleep 1
-    if [[ "$EVINCE_PRESENT"==true ]]; then
-        evince $OUTPUT_FILE
-    fi
     md5_original=$(md5sum ${FILENAME} | awk '{ print $1 }')
-
     while :; do
 	sleep .5s
 	md5_new=$(md5sum ${FILENAME} | awk '{ print $1 }')
